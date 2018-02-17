@@ -2,7 +2,6 @@ builds:
 - main: cmd/server/server.go
   binary: doggo-server
   goos:
-    - windows
     - darwin
     - linux
   goarch:
@@ -10,7 +9,6 @@ builds:
 - main: cmd/client/client.go
   binary: doggo-client
   goos:
-    - windows
     - darwin
     - linux
   goarch:
@@ -20,13 +18,13 @@ dockers:
   image: rossedman/doggo-server
   goos: linux
   goarch: amd64
-  dockerfile: Dockerfile
+  dockerfile: Dockerfile.server
   tag_templates:
   - latest
 - binary: doggo-client
   image: rossedman/doggo-client
   goos: linux
   goarch: amd64
-  dockerfile: Dockerfile
+  dockerfile: Dockerfile.client
   tag_templates:
-  - latest
+  - "latest"

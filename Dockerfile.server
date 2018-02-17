@@ -1,0 +1,4 @@
+FROM scratch
+COPY dist/linuxamd64/doggo-server /
+EXPOSE 9000
+ENTRYPOINT ["/doggo-server"]
