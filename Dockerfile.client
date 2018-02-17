@@ -1,4 +1,4 @@
 FROM scratch
-COPY dist/linuxamd64/doggo-client /
+COPY doggo-client /doggo-client
 EXPOSE 9000
 ENTRYPOINT ["/doggo-client"]
