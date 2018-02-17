@@ -22,7 +22,6 @@ dockers:
   goarch: amd64
   dockerfile: Dockerfile
   tag_templates:
-  - "{{ .Version }}"
   - latest
 - binary: doggo-client
   image: rossedman/doggo-client
@@ -30,5 +29,4 @@ dockers:
   goarch: amd64
   dockerfile: Dockerfile
   tag_templates:
-  - "{{ .Version }}"
   - latest
