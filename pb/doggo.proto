@@ -4,9 +4,6 @@ option go_package = "pkg/doggo/pb";
 
 service DoggoService {
     rpc GetById (GetByIdRequest) returns (Doggo);
-    rpc GetAll (GetAllRequest) returns (stream Doggo);
-    rpc Save (Doggo) returns (Doggo);
-    rpc SaveAll (stream Doggo) returns (stream Doggo);
 }
 
 message Doggo {
@@ -15,8 +12,6 @@ message Doggo {
     string breed = 3;
     bool isGood = 4;
 }
-
-message GetAllRequest {}
 
 message GetByIdRequest {
     int32 id = 1;

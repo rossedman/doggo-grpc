@@ -9,7 +9,6 @@ It is generated from these files:
 
 It has these top-level messages:
 	Doggo
-	GetAllRequest
 	GetByIdRequest
 */
 package pb
@@ -74,14 +73,6 @@ func (m *Doggo) GetIsGood() bool {
 	return false
 }
 
-type GetAllRequest struct {
-}
-
-func (m *GetAllRequest) Reset()                    { *m = GetAllRequest{} }
-func (m *GetAllRequest) String() string            { return proto.CompactTextString(m) }
-func (*GetAllRequest) ProtoMessage()               {}
-func (*GetAllRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{1} }
-
 type GetByIdRequest struct {
 	Id int32 `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`
 }
@@ -89,7 +80,7 @@ type GetByIdRequest struct {
 func (m *GetByIdRequest) Reset()                    { *m = GetByIdRequest{} }
 func (m *GetByIdRequest) String() string            { return proto.CompactTextString(m) }
 func (*GetByIdRequest) ProtoMessage()               {}
-func (*GetByIdRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{2} }
+func (*GetByIdRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{1} }
 
 func (m *GetByIdRequest) GetId() int32 {
 	if m != nil {
@@ -100,7 +91,6 @@ func (m *GetByIdRequest) GetId() int32 {
 
 func init() {
 	proto.RegisterType((*Doggo)(nil), "Doggo")
-	proto.RegisterType((*GetAllRequest)(nil), "GetAllRequest")
 	proto.RegisterType((*GetByIdRequest)(nil), "GetByIdRequest")
 }
 
@@ -116,9 +106,6 @@ const _ = grpc.SupportPackageIsVersion4
 
 type DoggoServiceClient interface {
 	GetById(ctx context.Context, in *GetByIdRequest, opts ...grpc.CallOption) (*Doggo, error)
-	GetAll(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (DoggoService_GetAllClient, error)
-	Save(ctx context.Context, in *Doggo, opts ...grpc.CallOption) (*Doggo, error)
-	SaveAll(ctx context.Context, opts ...grpc.CallOption) (DoggoService_SaveAllClient, error)
 }
 
 type doggoServiceClient struct {
@@ -138,85 +125,10 @@ func (c *doggoServiceClient) GetById(ctx context.Context, in *GetByIdRequest, op
 	return out, nil
 }
 
-func (c *doggoServiceClient) GetAll(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (DoggoService_GetAllClient, error) {
-	stream, err := grpc.NewClientStream(ctx, &_DoggoService_serviceDesc.Streams[0], c.cc, "/DoggoService/GetAll", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &doggoServiceGetAllClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type DoggoService_GetAllClient interface {
-	Recv() (*Doggo, error)
-	grpc.ClientStream
-}
-
-type doggoServiceGetAllClient struct {
-	grpc.ClientStream
-}
-
-func (x *doggoServiceGetAllClient) Recv() (*Doggo, error) {
-	m := new(Doggo)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *doggoServiceClient) Save(ctx context.Context, in *Doggo, opts ...grpc.CallOption) (*Doggo, error) {
-	out := new(Doggo)
-	err := grpc.Invoke(ctx, "/DoggoService/Save", in, out, c.cc, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *doggoServiceClient) SaveAll(ctx context.Context, opts ...grpc.CallOption) (DoggoService_SaveAllClient, error) {
-	stream, err := grpc.NewClientStream(ctx, &_DoggoService_serviceDesc.Streams[1], c.cc, "/DoggoService/SaveAll", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &doggoServiceSaveAllClient{stream}
-	return x, nil
-}
-
-type DoggoService_SaveAllClient interface {
-	Send(*Doggo) error
-	Recv() (*Doggo, error)
-	grpc.ClientStream
-}
-
-type doggoServiceSaveAllClient struct {
-	grpc.ClientStream
-}
-
-func (x *doggoServiceSaveAllClient) Send(m *Doggo) error {
-	return x.ClientStream.SendMsg(m)
-}
-
-func (x *doggoServiceSaveAllClient) Recv() (*Doggo, error) {
-	m := new(Doggo)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
 // Server API for DoggoService service
 
 type DoggoServiceServer interface {
 	GetById(context.Context, *GetByIdRequest) (*Doggo, error)
-	GetAll(*GetAllRequest, DoggoService_GetAllServer) error
-	Save(context.Context, *Doggo) (*Doggo, error)
-	SaveAll(DoggoService_SaveAllServer) error
 }
 
 func RegisterDoggoServiceServer(s *grpc.Server, srv DoggoServiceServer) {
@@ -241,71 +153,6 @@ func _DoggoService_GetById_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DoggoService_GetAll_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(GetAllRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(DoggoServiceServer).GetAll(m, &doggoServiceGetAllServer{stream})
-}
-
-type DoggoService_GetAllServer interface {
-	Send(*Doggo) error
-	grpc.ServerStream
-}
-
-type doggoServiceGetAllServer struct {
-	grpc.ServerStream
-}
-
-func (x *doggoServiceGetAllServer) Send(m *Doggo) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func _DoggoService_Save_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Doggo)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DoggoServiceServer).Save(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/DoggoService/Save",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DoggoServiceServer).Save(ctx, req.(*Doggo))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _DoggoService_SaveAll_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(DoggoServiceServer).SaveAll(&doggoServiceSaveAllServer{stream})
-}
-
-type DoggoService_SaveAllServer interface {
-	Send(*Doggo) error
-	Recv() (*Doggo, error)
-	grpc.ServerStream
-}
-
-type doggoServiceSaveAllServer struct {
-	grpc.ServerStream
-}
-
-func (x *doggoServiceSaveAllServer) Send(m *Doggo) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func (x *doggoServiceSaveAllServer) Recv() (*Doggo, error) {
-	m := new(Doggo)
-	if err := x.ServerStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
 var _DoggoService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "DoggoService",
 	HandlerType: (*DoggoServiceServer)(nil),
@@ -314,44 +161,25 @@ var _DoggoService_serviceDesc = grpc.ServiceDesc{
 			MethodName: "GetById",
 			Handler:    _DoggoService_GetById_Handler,
 		},
-		{
-			MethodName: "Save",
-			Handler:    _DoggoService_Save_Handler,
-		},
 	},
-	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "GetAll",
-			Handler:       _DoggoService_GetAll_Handler,
-			ServerStreams: true,
-		},
-		{
-			StreamName:    "SaveAll",
-			Handler:       _DoggoService_SaveAll_Handler,
-			ServerStreams: true,
-			ClientStreams: true,
-		},
-	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "pb/doggo.proto",
 }
 
 func init() { proto.RegisterFile("pb/doggo.proto", fileDescriptor0) }
 
 var fileDescriptor0 = []byte{
-	// 231 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x5c, 0x90, 0xc1, 0x4a, 0xc3, 0x40,
-	0x10, 0x86, 0x99, 0x98, 0xa4, 0x3a, 0xd4, 0x2d, 0x0c, 0x52, 0x82, 0x20, 0x84, 0x3d, 0xe5, 0x94,
-	0x16, 0x7d, 0x02, 0x8b, 0x10, 0xbc, 0xa6, 0x27, 0xbd, 0x35, 0xee, 0x10, 0x16, 0xab, 0xbb, 0xa6,
-	0x6b, 0xc1, 0x87, 0xf0, 0x9d, 0x25, 0xbb, 0x6b, 0xa1, 0xb9, 0xed, 0xff, 0xed, 0x7c, 0xfc, 0xc3,
-	0xa0, 0xb0, 0xdd, 0x4a, 0x99, 0xbe, 0x37, 0xb5, 0x1d, 0x8c, 0x33, 0xf2, 0x05, 0xb3, 0xa7, 0x31,
-	0x92, 0xc0, 0x44, 0xab, 0x02, 0x4a, 0xa8, 0xb2, 0x36, 0xd1, 0x8a, 0x08, 0xd3, 0xcf, 0xdd, 0x07,
-	0x17, 0x49, 0x09, 0xd5, 0x55, 0xeb, 0xdf, 0x74, 0x83, 0x59, 0x37, 0x30, 0xab, 0xe2, 0xc2, 0xc3,
-	0x10, 0x68, 0x89, 0xb9, 0x3e, 0x34, 0xc6, 0xa8, 0x22, 0x2d, 0xa1, 0xba, 0x6c, 0x63, 0x92, 0x0b,
-	0xbc, 0x6e, 0xd8, 0x3d, 0xee, 0xf7, 0x2d, 0x7f, 0x7d, 0xf3, 0xc1, 0xc9, 0x12, 0x45, 0xc3, 0x6e,
-	0xf3, 0xf3, 0xac, 0x22, 0x99, 0x96, 0xde, 0xff, 0x02, 0xce, 0xfd, 0x3a, 0x5b, 0x1e, 0x8e, 0xfa,
-	0x8d, 0x49, 0xe2, 0x2c, 0x2a, 0xb4, 0xa8, 0xcf, 0xe5, 0xdb, 0xbc, 0x0e, 0x9b, 0x4b, 0xcc, 0x43,
-	0x0f, 0x89, 0xfa, 0xac, 0xf0, 0x7f, 0x62, 0x0d, 0xb4, 0xc4, 0x74, 0xbb, 0x3b, 0x32, 0x45, 0x72,
-	0x72, 0xef, 0x70, 0x36, 0xf2, 0x51, 0x9e, 0x7c, 0x55, 0xb0, 0x86, 0x8d, 0x78, 0x9d, 0xdb, 0xf7,
-	0x3e, 0x1c, 0x6c, 0x65, 0xbb, 0x2e, 0xf7, 0x47, 0x7b, 0xf8, 0x0b, 0x00, 0x00, 0xff, 0xff, 0xbc,
-	0x21, 0x5f, 0xc4, 0x46, 0x01, 0x00, 0x00,
+	// 180 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x2b, 0x48, 0xd2, 0x4f,
+	0xc9, 0x4f, 0x4f, 0xcf, 0xd7, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x57, 0x8a, 0xe4, 0x62, 0x75, 0x01,
+	0x71, 0x85, 0xf8, 0xb8, 0x98, 0x32, 0x53, 0x24, 0x18, 0x15, 0x18, 0x35, 0x58, 0x83, 0x98, 0x32,
+	0x53, 0x84, 0x84, 0xb8, 0x58, 0xf2, 0x12, 0x73, 0x53, 0x25, 0x98, 0x14, 0x18, 0x35, 0x38, 0x83,
+	0xc0, 0x6c, 0x21, 0x11, 0x2e, 0xd6, 0xa4, 0xa2, 0xd4, 0xd4, 0x14, 0x09, 0x66, 0xb0, 0x20, 0x84,
+	0x23, 0x24, 0xc6, 0xc5, 0x96, 0x59, 0xec, 0x9e, 0x9f, 0x9f, 0x22, 0xc1, 0xa2, 0xc0, 0xa8, 0xc1,
+	0x11, 0x04, 0xe5, 0x29, 0x29, 0x70, 0xf1, 0xb9, 0xa7, 0x96, 0x38, 0x55, 0x7a, 0xa6, 0x04, 0xa5,
+	0x16, 0x96, 0xa6, 0x16, 0x97, 0xa0, 0xdb, 0x61, 0x64, 0xc4, 0xc5, 0x03, 0xb6, 0x3c, 0x38, 0xb5,
+	0xa8, 0x2c, 0x33, 0x39, 0x55, 0x48, 0x89, 0x8b, 0x1d, 0xaa, 0x43, 0x88, 0x5f, 0x0f, 0x55, 0xaf,
+	0x14, 0x9b, 0x1e, 0x58, 0xa9, 0x13, 0x5f, 0x14, 0x4f, 0x41, 0x76, 0x3a, 0xc4, 0x0f, 0xfa, 0x05,
+	0x49, 0x49, 0x6c, 0x60, 0x7f, 0x18, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0x59, 0x1a, 0x5e, 0x2a,
+	0xd9, 0x00, 0x00, 0x00,
 }
