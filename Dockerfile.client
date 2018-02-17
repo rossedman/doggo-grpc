@@ -1,4 +1,0 @@
-FROM scratch
-COPY doggo-client /doggo-client
-EXPOSE 9000
-ENTRYPOINT ["/doggo-client"]
