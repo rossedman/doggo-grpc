@@ -1,17 +1,34 @@
 builds:
-  - main: cmd/server/server.go
-    binary: doggo-server
-    goos:
-      - windows
-      - darwin
-      - linux
-    goarch:
-      - amd64
-  - main: cmd/client/client.go
-    binary: doggo-client
-    goos:
-      - windows
-      - darwin
-      - linux
-    goarch:
-      - amd64
+- main: cmd/server/server.go
+  binary: doggo-server
+  goos:
+    - windows
+    - darwin
+    - linux
+  goarch:
+    - amd64
+- main: cmd/client/client.go
+  binary: doggo-client
+  goos:
+    - windows
+    - darwin
+    - linux
+  goarch:
+    - amd64
+dockers:
+- binary: doggo-server
+  image: rossedman/doggo-server
+  goos: linux
+  goarch: amd64
+  dockerfile: Dockerfile
+  tag_templates:
+  - "{{ .Version }}"
+  - latest
+- binary: doggo-client
+  image: rossedman/doggo-client
+  goos: linux
+  goarch: amd64
+  dockerfile: Dockerfile
+  tag_templates:
+  - "{{ .Version }}"
+  - latest
