@@ -20,7 +20,7 @@ dockers:
   goarch: amd64
   dockerfile: Dockerfile.server
   tag_templates:
-  - latest
+  - "latest"
 - binary: doggo-client
   image: rossedman/doggo-client
   goos: linux
