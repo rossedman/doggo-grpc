@@ -5,7 +5,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/toyota-connected/doggo/pkg/doggo/pb"
+	"github.com/rossedman/doggo/pkg/doggo/pb"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"

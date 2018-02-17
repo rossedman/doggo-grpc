@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 
-	"github.com/toyota-connected/doggo/pkg/doggo/pb"
+	"github.com/rossedman/doggo/pkg/doggo/pb"
 	context "golang.org/x/net/context"
 )
 
