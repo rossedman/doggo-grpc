@@ -1,0 +1,17 @@
+builds:
+  - main: cmd/server/server.go
+    binary: doggo-server
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
+  - main: cmd/client/client.go
+    binary: doggo-client
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64
