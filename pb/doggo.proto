@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "pkg/doggo/pb";
+option go_package = "pkg/doggo-grpc/pb";
 
 service DoggoService {
     rpc GetById (GetByIdRequest) returns (Doggo);
